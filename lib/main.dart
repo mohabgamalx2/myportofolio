@@ -110,137 +110,136 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Scrollbar(
-        controller: _scrollController,
-        
-        child: Stack(
-          children: [
-            // Background gradient with subtle animation
-            AnimatedContainer(
-              duration: const Duration(seconds: 20),
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color(0xFF0A1128),
-                    Color(0xFF0F2167),
-                    Color(0xFF0A1128),
-                  ],
-                ),
-              ),
-            ),
-            
-            // Background animated code (with improved animation)
-            Positioned.fill(
-              child: AnimatedOpacity(
-                duration: const Duration(seconds: 1),
-                opacity: 0.2,
-                child: CustomPaint(
-                  painter: CodeBackgroundPainter(),
-                ),
-              ),
-            ),
-            
-            // Main content
-            SafeArea(
-              child: CustomScrollView(
-                controller: _scrollController,
-                slivers: [
-                  // App Bar
-                  SliverAppBar(
-                    backgroundColor: _appBarColor,
-                    elevation: 0,
-                    floating: true,
-                    pinned: true,
-                    expandedHeight: 70,
-                    flexibleSpace: FlexibleSpaceBar(
-                      background: Container(
-                        decoration: BoxDecoration(
-                          color: _appBarColor,
-                          borderRadius: BorderRadius.circular(10),
-                          
-                        ),
-                      ),
-                    ),
-                    title: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 100.0),
-                      child: Row(
-                        children: [
-                          const SizedBox(height: 50),
-                          Image.asset('assets/images/logo.png', width: 60),
-                          const Spacer(),
-                          LayoutBuilder(
-                            builder: (context, constraints) {
-                              if (MediaQuery.of(context).size.width > 600) {
-                                return Row(
-                                  children: [
-                                    NavButton(title: 'Skills', onTap: () => _scrollToSection(0)),
-                                    NavButton(title: 'Experience', onTap: () => _scrollToSection(1)),
-                                    NavButton(title: 'Projects', onTap: () => _scrollToSection(2)),
-                                    NavButton(title: 'Tutorials', onTap: () => _scrollToSection(3)), // Added new nav button
-                                    NavButton(title: 'Contact', onTap: () => _scrollToSection(4)), // Updated index
-                                  ],
-                                );
-                              } else {
-                                return IconButton(
-                                  icon: const Icon(Icons.menu),
-                                  onPressed: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      builder: (context) => MobileNavMenu(
-                                        onItemTap: _scrollToSection,
-                                      ),
-                                    );
-                                  },
-                                );
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  
-                  // Hero Section
-                  SliverToBoxAdapter(
-                    child: HeroSection(key: _heroKey, onContactMeTap: () => _scrollToSection(4), onViewProjectsTap: () => _scrollToSection(2)),
-                  ),
-                  
-                  // About Section
-                  SliverToBoxAdapter(
-                    child: SkillsSection(key: _aboutKey),
-                  ),
-                  
-                  // Services Section
-                  SliverToBoxAdapter(
-                    child: ExperienceSection(key: _servicesKey),
-                  ),
-                  
-                  // Projects Section
-                  SliverToBoxAdapter(
-                    child: ProjectsSection(key: _projectsKey),
-                  ),
-                  
-                  // Tutorials Section (New)
-                  SliverToBoxAdapter(
-                    child: TutorialsSection(key: _tutorialsKey),
-                  ),
-                  
-                  // Contact Section
-                  SliverToBoxAdapter(
-                    child: ContactSection(key: _contactKey),
-                  ),
-                  
-                  // Footer
-                  SliverToBoxAdapter(
-                    child: Footer(onNavTap: _scrollToSection),
-                  ),
+      body: Stack(
+        children: [
+          // Background gradient with subtle animation
+          AnimatedContainer(
+            duration: const Duration(seconds: 20),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFF0A1128),
+                  Color(0xFF0F2167),
+                  Color(0xFF0A1128),
                 ],
               ),
             ),
-          ],
+          ),
+          
+          // Background animated code (with improved animation)
+          Positioned.fill(
+            child: AnimatedOpacity(
+              duration: const Duration(seconds: 1),
+              opacity: 0.2,
+              child: CustomPaint(
+                painter: CodeBackgroundPainter(),
+              ),
+            ),
+          ),
+          
+          // Main content
+        SafeArea(
+  child: Scrollbar(
+    controller: _scrollController, // Connect to the same controller
+    thumbVisibility: true, // Always show on desktop/web
+    thickness: 8, // Width of the scrollbar
+    radius: const Radius.circular(4), // Rounded corners
+    notificationPredicate: (notification) {
+      // Allow both touch and mouse scrolling
+      return notification.depth == 0;
+    },
+    child: CustomScrollView(
+      controller: _scrollController,
+      physics: const BouncingScrollPhysics(), // iOS-like bounce effect
+      slivers: [
+        // Keep all your existing Sliver widgets exactly as they are
+        SliverAppBar(
+          backgroundColor: _appBarColor,
+          elevation: 0,
+          floating: true,
+          pinned: true,
+          expandedHeight: 70,
+          flexibleSpace: FlexibleSpaceBar(
+            background: Container(
+              decoration: BoxDecoration(
+                color: _appBarColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+          title: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 100.0),
+            child: Row(
+              children: [
+                const SizedBox(height: 50),
+                Image.asset('assets/images/logo.png', width: 60),
+                const Spacer(),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    if (MediaQuery.of(context).size.width > 600) {
+                      return Row(
+                        children: [
+                          NavButton(title: 'Skills', onTap: () => _scrollToSection(0)),
+                          NavButton(title: 'Experience', onTap: () => _scrollToSection(1)),
+                          NavButton(title: 'Projects', onTap: () => _scrollToSection(2)),
+                          NavButton(title: 'Tutorials', onTap: () => _scrollToSection(3)),
+                          NavButton(title: 'Contact', onTap: () => _scrollToSection(4)),
+                        ],
+                      );
+                    } else {
+                      return IconButton(
+                        icon: const Icon(Icons.menu),
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (context) => MobileNavMenu(
+                              onItemTap: _scrollToSection,
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
         ),
+        
+        SliverToBoxAdapter(
+          child: HeroSection(key: _heroKey, onContactMeTap: () => _scrollToSection(4), onViewProjectsTap: () => _scrollToSection(2)),
+        ),
+        
+        SliverToBoxAdapter(
+          child: SkillsSection(key: _aboutKey),
+        ),
+        
+        SliverToBoxAdapter(
+          child: ExperienceSection(key: _servicesKey),
+        ),
+        
+        SliverToBoxAdapter(
+          child: ProjectsSection(key: _projectsKey),
+        ),
+        
+        SliverToBoxAdapter(
+          child: TutorialsSection(key: _tutorialsKey),
+        ),
+        
+        SliverToBoxAdapter(
+          child: ContactSection(key: _contactKey),
+        ),
+        
+        SliverToBoxAdapter(
+          child: Footer(onNavTap: _scrollToSection),
+        ),
+      ],
+    ),
+  ),
+)
+        ],
       ),
     );
   }
